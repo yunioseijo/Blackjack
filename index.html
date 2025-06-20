@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8" />
     <title>BlackJack
     </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css" />
 </head>
+
 <body>
+    <header class="titulo">BlackJack</header>
+    <div class="row mt-2">
+        <div class="col text-center">
+            <button class="btn btn-primary" id="btnIniciarJuego">Iniciar Juego</button>
+            <button class="btn btn-danger" id="btnTerminarJuego">Terminar Juego</button>
+            <button class="btn btn-success" id="btnRepartirCartas">Repartir Cartas</button>
+            <button class="btn btn-warning" id="btnPedirCarta">Pedir Carta</button>
+            <button class="btn btn-info" id="btnPlantarse">Plantarse</button>
+        </div>
+    </div>
+    <div class="row container mt-2">
+        <div class="col">
+            <h1>Jugador 1 - <small>puntaje: 0</small></h1>
+            <div id="jugador-cartas">
+                <img class="carta" src="assets/cartas/2C.png" alt="">
+                <img class="carta" src="assets/cartas/2C.png" alt="">
+                <img class="carta" src="assets/cartas/2C.png" alt="">
+                <img class="carta" src="assets/cartas/2C.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="row container mt-4">
+        <div class="col">
+            <h1>Computadora - <small>puntaje: 0</small></h1>
+            <div id="computadora-cartas">
+                <img class="carta" src="assets/cartas/5C.png" alt="">
+                <img class="carta" src="assets/cartas/5C.png" alt="">
+                <img class="carta" src="assets/cartas/5C.png" alt="">
+                <img class="carta" src="assets/cartas/5C.png" alt="">
+            </div>
+        </div>
+    </div>
+
+
+
+
     <script src="assets/js/juego.js"></script>
 </body>
+
 </html>
