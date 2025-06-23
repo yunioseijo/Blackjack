@@ -16,6 +16,17 @@ const playerPointsElement = document.querySelector("#player-points");
 const computerPointsElement = document.querySelector("#computer-points");
 const playerCardsElement = document.querySelector("#player-cards");
 const computerCardsElement = document.querySelector("#computer-cards");
+const resultElement =
+  document.querySelector("#result") ||
+  (() => {
+    const el = document.createElement("div");
+    el.id = "result";
+    el.style.fontWeight = "bold";
+    el.style.fontSize = "1.2em";
+    el.style.marginTop = "1em";
+    playerCardsElement.parentNode.appendChild(el);
+    return el;
+  })();
 
 const createDeck = () => {
   for (let i = 2; i <= 10; i++) {
@@ -55,6 +66,20 @@ const valueCard3 = (card) => {
   return isNaN(value) ? (value === "A" ? 11 : 10) : value * 1;
 };
 
+function showResult(message, arguments) {
+  if (arguments) {
+    console.warn(message, arguments);
+  }
+  resultElement.classList.remove(
+    "bg-success",
+    "bg-danger",
+    "bg-info",
+    "d-none"
+  );
+  resultElement.classList.add(arguments, "d-inline-block");
+  resultElement.innerText = message;
+}
+
 btnAskForCard.addEventListener("click", () => {
   const card = askForDeck();
   playerPoints += valueCard2(card);
@@ -67,9 +92,13 @@ btnAskForCard.addEventListener("click", () => {
   if (playerPoints > 21) {
     console.warn("You exceeded 21 points, you lose!");
     btnAskForCard.disabled = true;
+    btnStand.disabled = true;
+    showResult("¡Te pasaste de 21! Pierdes.", "bg-danger");
   } else if (playerPoints === 21) {
     console.warn("You reached 21 points, you win!");
     btnAskForCard.disabled = true;
+    btnStand.disabled = true;
+    showResult("¡Llegaste a 21! ¡Ganaste!", "bg-success");
   }
 });
 
@@ -103,22 +132,34 @@ const computerTurn = async (pointsToBeat) => {
     computerCardsElement.append(imgCard);
     if (pointsToBeat > 21) {
       console.warn("Computer wins");
+      showResult("La computadora gana, tú te pasaste de 21.", "bg-danger");
       break;
     }
     await sleep(500); // Simulate delay for the computer's turn
     if (computerPoints === 21) {
       console.warn("The computer reached 21 points, it wins!");
+      showResult("La computadora llegó a 21, ¡gana!", "bg-danger");
       break;
     }
     if (computerPoints > 21) {
       console.warn("The computer exceeded 21 points, you win!");
+      showResult("¡La computadora se pasó de 21! ¡Tú ganas!", "bg-success");
       break;
     }
     if (computerPoints > pointsToBeat && computerPoints <= 21) {
       console.warn("The computer wins!");
+      showResult("La computadora gana por tener más puntos.", "bg-danger");
       break;
     }
   } while (computerPoints <= pointsToBeat && computerPoints <= 21);
+  // If loop ends without break, check for tie
+  if (
+    computerPoints === pointsToBeat &&
+    computerPoints <= 21 &&
+    pointsToBeat <= 21
+  ) {
+    showResult("¡Empate!", "bg-info");
+  }
 };
 
 btnStartGame.addEventListener("click", () => {
@@ -132,4 +173,7 @@ btnStartGame.addEventListener("click", () => {
   computerCardsElement.innerHTML = "";
   btnAskForCard.disabled = false;
   btnStand.disabled = false;
+  resultElement.innerText = "";
+  resultElement.classList.remove("d-inline-block");
+  resultElement.classList.add("d-none");
 });
