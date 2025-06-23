@@ -29,6 +29,7 @@ const resultElement =
   })();
 
 const createDeck = () => {
+  deck = [];
   for (let i = 2; i <= 10; i++) {
     deck.push(`${i}C`, `${i}D`, `${i}H`, `${i}S`);
   }
@@ -38,7 +39,7 @@ const createDeck = () => {
   }
   return _.shuffle(deck);
 };
-console.log((deck = createDeck()));
+// console.log((deck = createDeck()));
 
 const askForDeck = () => {
   if (deck.length === 0) {
@@ -68,7 +69,7 @@ const valueCard3 = (card) => {
 
 function showResult(message, arguments) {
   if (arguments) {
-    console.warn(message, arguments);
+    // console.warn(message, arguments);
   }
   resultElement.classList.remove(
     "bg-success",
@@ -83,19 +84,19 @@ function showResult(message, arguments) {
 btnAskForCard.addEventListener("click", () => {
   const card = askForDeck();
   playerPoints += valueCard2(card);
-  console.log(`You drew: ${card}`);
-  console.log(`Your points: ${playerPoints}`);
+  //   console.log(`You drew: ${card}`);
+  //   console.log(`Your points: ${playerPoints}`);
   playerPointsElement.innerText = `Puntuación: ${playerPoints}`;
   //<img class="carta" src="assets/cartas/2C.png" alt="">
   const imgCard = addImageCard(card);
   playerCardsElement.append(imgCard);
   if (playerPoints > 21) {
-    console.warn("You exceeded 21 points, you lose!");
+    // console.warn("You exceeded 21 points, you lose!");
     btnAskForCard.disabled = true;
     btnStand.disabled = true;
     showResult("¡Te pasaste de 21! Pierdes.", "bg-danger");
   } else if (playerPoints === 21) {
-    console.warn("You reached 21 points, you win!");
+    // console.warn("You reached 21 points, you win!");
     btnAskForCard.disabled = true;
     btnStand.disabled = true;
     showResult("¡Llegaste a 21! ¡Ganaste!", "bg-success");
@@ -110,7 +111,7 @@ const addImageCard = (card) => {
   return imgCard;
 };
 btnStand.addEventListener("click", () => {
-  console.warn("You chose to stand, now it's the computer's turn.");
+  //   console.warn("You chose to stand, now it's the computer's turn.");
   btnAskForCard.disabled = true;
   btnStand.disabled = true;
   computerTurn(playerPoints);
@@ -125,29 +126,29 @@ const computerTurn = async (pointsToBeat) => {
   do {
     const card = askForDeck();
     computerPoints += valueCard2(card);
-    console.log(`Computer drew: ${card}`);
-    console.log(`Computer points: ${computerPoints}`);
+    // console.log(`Computer drew: ${card}`);
+    // console.log(`Computer points: ${computerPoints}`);
     computerPointsElement.innerText = `Puntuación: ${computerPoints}`;
     const imgCard = addImageCard(card);
     computerCardsElement.append(imgCard);
     if (pointsToBeat > 21) {
-      console.warn("Computer wins");
+      //   console.warn("Computer wins");
       showResult("La computadora gana, tú te pasaste de 21.", "bg-danger");
       break;
     }
     await sleep(500); // Simulate delay for the computer's turn
     if (computerPoints === 21) {
-      console.warn("The computer reached 21 points, it wins!");
+      //   console.warn("The computer reached 21 points, it wins!");
       showResult("La computadora llegó a 21, ¡gana!", "bg-danger");
       break;
     }
     if (computerPoints > 21) {
-      console.warn("The computer exceeded 21 points, you win!");
+      //   console.warn("The computer exceeded 21 points, you win!");
       showResult("¡La computadora se pasó de 21! ¡Tú ganas!", "bg-success");
       break;
     }
     if (computerPoints > pointsToBeat && computerPoints <= 21) {
-      console.warn("The computer wins!");
+      //   console.warn("The computer wins!");
       showResult("La computadora gana por tener más puntos.", "bg-danger");
       break;
     }
@@ -163,7 +164,7 @@ const computerTurn = async (pointsToBeat) => {
 };
 
 btnStartGame.addEventListener("click", () => {
-  console.log("Starting a new game, good luck!");
+  //   console.log("Starting a new game, good luck!");
   deck = createDeck();
   playerPoints = 0;
   computerPoints = 0;
