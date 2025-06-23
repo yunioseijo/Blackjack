@@ -17,6 +17,6 @@ html, body{
     left: 100px;
     margin-left: -75px;
 }
-#computadora-cartas, #jugador-cartas {
+#computer-cards, #player-cards {
     min-height: 180px;
 }

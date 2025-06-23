@@ -9,6 +9,14 @@ let deck = [];
 let playerPoints = 0,
   computerPoints = 0;
 
+const btnStartGame = document.querySelector("#btn-start-game");
+const btnAskForCard = document.querySelector("#btn-ask-for-card");
+const btnStand = document.querySelector("#btn-stand");
+const playerPointsElement = document.querySelector("#player-points");
+const computerPointsElement = document.querySelector("#computer-points");
+const playerCardsElement = document.querySelector("#player-cards");
+const computerCardsElement = document.querySelector("#computer-cards");
+
 const createDeck = () => {
   for (let i = 2; i <= 10; i++) {
     deck.push(`${i}C`, `${i}D`, `${i}H`, `${i}S`);
@@ -21,24 +29,18 @@ const createDeck = () => {
 };
 console.log((deck = createDeck()));
 
-// Ask for a card
 const askForDeck = () => {
   if (deck.length === 0) {
     throw "No cards in the deck";
   }
   const card = deck.shift();
-  console.log(`You drew: ${card}`);
-  console.log(deck);
+
   return card;
 };
-//Test throw error when no cards left
-// deck = [];
 
 const valueCard = (card) => {
   const value = card.substring(0, card.length - 1);
-  console.log(`The value of the card ${card} is: ${value}`);
   if (isNaN(value)) {
-    console.log("Not a number");
     return value === "A" ? 11 : 10; // Aces are worth 11, face cards are worth 10
   } else {
     return value * 1; // Convert to number
@@ -53,4 +55,81 @@ const valueCard3 = (card) => {
   return isNaN(value) ? (value === "A" ? 11 : 10) : value * 1;
 };
 
-console.log(valueCard(askForDeck()));
+btnAskForCard.addEventListener("click", () => {
+  const card = askForDeck();
+  playerPoints += valueCard2(card);
+  console.log(`You drew: ${card}`);
+  console.log(`Your points: ${playerPoints}`);
+  playerPointsElement.innerText = `Puntuación: ${playerPoints}`;
+  //<img class="carta" src="assets/cartas/2C.png" alt="">
+  const imgCard = addImageCard(card);
+  playerCardsElement.append(imgCard);
+  if (playerPoints > 21) {
+    console.warn("You exceeded 21 points, you lose!");
+    btnAskForCard.disabled = true;
+  } else if (playerPoints === 21) {
+    console.warn("You reached 21 points, you win!");
+    btnAskForCard.disabled = true;
+  }
+});
+
+const addImageCard = (card) => {
+  const imgCard = document.createElement("img");
+  imgCard.classList.add("carta");
+  imgCard.src = `assets/cartas/${card}.png`;
+  imgCard.alt = card;
+  return imgCard;
+};
+btnStand.addEventListener("click", () => {
+  console.warn("You chose to stand, now it's the computer's turn.");
+  btnAskForCard.disabled = true;
+  btnStand.disabled = true;
+  computerTurn(playerPoints);
+});
+async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+// Condition to computer wins
+// playerPoints > 21
+// computerPoints > playerPoints && computerPoints <= 21
+const computerTurn = async (pointsToBeat) => {
+  do {
+    const card = askForDeck();
+    computerPoints += valueCard2(card);
+    console.log(`Computer drew: ${card}`);
+    console.log(`Computer points: ${computerPoints}`);
+    computerPointsElement.innerText = `Puntuación: ${computerPoints}`;
+    const imgCard = addImageCard(card);
+    computerCardsElement.append(imgCard);
+    if (pointsToBeat > 21) {
+      console.warn("Computer wins");
+      break;
+    }
+    await sleep(500); // Simulate delay for the computer's turn
+    if (computerPoints === 21) {
+      console.warn("The computer reached 21 points, it wins!");
+      break;
+    }
+    if (computerPoints > 21) {
+      console.warn("The computer exceeded 21 points, you win!");
+      break;
+    }
+    if (computerPoints > pointsToBeat && computerPoints <= 21) {
+      console.warn("The computer wins!");
+      break;
+    }
+  } while (computerPoints <= pointsToBeat && computerPoints <= 21);
+};
+
+btnStartGame.addEventListener("click", () => {
+  console.log("Starting a new game, good luck!");
+  deck = createDeck();
+  playerPoints = 0;
+  computerPoints = 0;
+  playerPointsElement.innerText = `Puntuación: ${playerPoints}`;
+  computerPointsElement.innerText = `Puntuación: ${computerPoints}`;
+  playerCardsElement.innerHTML = "";
+  computerCardsElement.innerHTML = "";
+  btnAskForCard.disabled = false;
+  btnStand.disabled = false;
+});
