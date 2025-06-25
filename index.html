@@ -30,16 +30,16 @@
     </div>
     <div class="row container mt-2">
         <div class="col">
-            <h1>Jugador 1 - <small id="player-points">puntaje: 0</small></h1>
-            <div id="player-cards">
+            <h1>Jugador 1 - <small class="player-points">puntaje: 0</small></h1>
+            <div class="container-cards">
 
             </div>
         </div>
     </div>
     <div class="row container mt-4">
         <div class="col">
-            <h1>Computadora - <small id="computer-points">puntaje: 0</small></h1>
-            <div id="computer-cards">
+            <h1>Computadora - <small class="player-points">puntaje: 0</small></h1>
+            <div class="container-cards">
 
             </div>
         </div>
@@ -49,7 +49,11 @@
 
 
     <script src="assets/js/underscore-min.js"></script>
-    <script src="assets/js/juego.js"></script>
+    <!-- <script src="assets/js/juego.js"></script> -->
+    <script src="assets/js/juego-min.js"></script>
+    <script>
+        blackjackModule.newGame(2);
+    </script>
 </body>
 
 </html>
